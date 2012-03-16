@@ -1,0 +1,31 @@
+GooDork : Command line google dorking tool
+------------------------------------------
+GooDork is a simple python script designed to allows you to leverage the
+power of google dorking straight from the comfort of your command line.
+
+GooDork offers powerfull use of googles search directives, by analyzing results
+from searches.
+
+Dependecies:
+
+GooDork uses the following python packages to get pumping and jumping
+please make sure all of them are available
+
+python-beautifulsoup            - error-tolerant HTML parser for Python    
+python-httplib2                 - comprehensive HTTP client library written 
+python-urllib2
+python-urllib
+python-urlparse
+	*Many of these are aleady available with python Python 2.6.* 
+
+Installing:
+The only installation you need do is to download the script entire script
+package, and make sure the dependencies --listed above-- are installed
+on your machine
+
+
+Contact:
+
+Twitter @k3170makan
+Email k3170makan@gmail.com
+Web k3170makan.blogspot.com
