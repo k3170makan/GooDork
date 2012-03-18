@@ -28,7 +28,10 @@ python-urllib
 python-urlparse
 	*Many of these are aleady available with python Python 2.6.* except beautifulsoup! 
 
+See here to find out how to install BeautifulSoup4: http://www.crummy.com/software/BeautifulSoup/
+
 Installing:
+
 The only installation you need do is to download the entire script
 package, and make sure the dependencies -- listed above -- are installed
 on your machine
