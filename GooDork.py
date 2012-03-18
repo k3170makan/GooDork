@@ -10,6 +10,9 @@ class GooDork:
 		return
 	def run(self):
 		results = []
+		if len(sys.argv[1:]) == 0:
+			self.usage()
+			sys.exit()
 		links = self.operator.goosearch(sys.argv[1])
 		self.links = links
 		if len(sys.argv[2:]) == 0:
