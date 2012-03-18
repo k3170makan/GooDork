@@ -48,16 +48,18 @@ class GooDork:
 			print "No Results match your regex"
 		
 	def usage(self):
-		print ".::GooDork::. 2.0"
-		print "Usage: ./GooDork [dork] {-b[pattern]|-t[pattern]|-a[pattern]}"
-		print
-		print "dork -- google search query"
-		print "pattern -- a regular expression to search for"
-		print "-b 	-- search the displayable text of the dork results for 'pattern'"
-		print "-t   -- search the title of the dork results for 'pattern'"
-		print "-a	-- search in the anchors of the dork results for 'pattern'"
-		print
-		print "e.g ./GooDork site:.edu -bStudents #retuns urls to all pages in the .edu domain displaying 'Students'"
+		print """.::GooDork::. 2.0
+
+Usage: ./GooDork [dork] {-b[pattern]|-t[pattern]|-a[pattern]}
+
+dork			-- google search query
+pattern			-- a regular expression to search for
+-b			-- search the displayable text of the dork results for 'pattern'
+-t			-- search the title of the dork results for 'pattern'
+-a			-- search in the anchors of the dork results for 'pattern'
+
+e.g ./GooDork site:.edu -bStudents #returns urls to all pages in the .edu domain displaying 'Students'
+"""
 	def inurl(self,pattern):
 		sys.stderr.write("searching for %s in links\n" % pattern)
 		return [link for link in self.links if self.operator.inurl(pattern,link)]
