@@ -27,8 +27,12 @@ class netlib:
 			code,msg,headers = self.httplib_inst.getreply()
 		except socket.error,e:
 			return (False,'')
-		sys.stderr.write("%s\n%s" % (code,msg))
-		sys.stderr.write("%s \n" % (headers))
+		try:
+			sys.stderr.write("\n\n%s\n%s\n" % (code.replace("\r",""),msg))
+		except:
+			sys.stderr.write("\n\n%s %s\n" % (code,msg))
+		sys.stderr.write("%s" % (headers))
+		sys.stderr.write("---------------------------\n")
 		html = self.httplib_inst.getfile().read()
 		return (True,html)
 	"""Return the html from a google search
@@ -49,6 +53,7 @@ class netlib:
 			code,msg,headers = self.httplib_inst.getreply()
 		except socket.error,e:
 			return (False,'')
+		sys.stderr.write("\n\n\n")
 		sys.stderr.write("%s\n%s" % (code,msg))
 		sys.stderr.write("%s \n" % (headers))
 		html = self.httplib_inst.getfile().read()

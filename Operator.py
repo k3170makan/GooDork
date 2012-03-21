@@ -99,7 +99,7 @@ class Operator:
 			for anchor in anchors:
 				href = anchor.get("href")
 				if self.inurl(pattern,href):
-					print href
+					print "anchor found! [",href,"]"
 					return True,href
 		except:
 			return False
