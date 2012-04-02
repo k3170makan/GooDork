@@ -1,3 +1,12 @@
+                                                                 
+     _/_/_/                   _/_/_/                     _/      
+  _/         _/_/     _/_/   _/    _/   _/_/   _/  _/_/ _/  _/   
+ _/  _/_/ _/    _/ _/    _/ _/    _/ _/    _/ _/_/     _/_/      
+_/    _/ _/    _/ _/    _/ _/    _/ _/    _/ _/       _/  _/     
+ _/_/_/   _/_/     _/_/   _/_/_/     _/_/   _/       _/    _/    
+                                                                 
+by k3170makan
+                                         
 GooDork : Command line google dorking tool
 ------------------------------------------
 GooDork is a simple python script designed to allow you to leverage the
@@ -29,6 +38,8 @@ python-urlparse
 	*Many of these are aleady available with python Python 2.6.* except beautifulsoup! 
 
 See here to find out how to install BeautifulSoup4: http://www.crummy.com/software/BeautifulSoup/
+You may need to install pip (pip - install Python packages) for *nix users this makes installing BeautifulSoup4 
+alot easier
 
 Installing:
 
