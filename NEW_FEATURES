@@ -1,0 +1,20 @@
+GooDork 2.2: New Features
+-------------------------
+A summary of the improvements and additions I've made
+
+	*Custom UserAgent:
+		A brand new switch is available, '-U' which allows you to specify a custom user agent
+		if you don't supply a user-agent---by this I mean invoking GooDork with out the -U switch---
+		the defaulf value of 'Internet Explorer 6.0' will be used
+
+	*Optimized switch application
+		I've made more logical application of the switches. GooDork will now first collect
+		all the HTML for a given page and then search through it. This is will only happend if
+		you set a switch that requires GooDork to search throught the HTML in any way.
+
+	*More Results:
+		I've Improved the way GooDork fetches results so it exhausts as many result pages as possible.
+		You should see an average of about 500 results per query, I got a max of about 989 results.
+		In future I'll improve this even more!!
+	*Output:
+		I've changed the output slightly so its friendlier to perl/bash programmers ;)
