@@ -7,7 +7,7 @@ _/    _/ _/    _/ _/    _/ _/    _/ _/    _/ _/       _/  _/
                                                                  
 by k3170makan
                                          
-GooDork : Command line google dorking tool
+GooDork 2.2 : Command line google dorking tool
 ------------------------------------------
 GooDork is a simple python script designed to allow you to leverage the
 power of google dorking straight from the comfort of your command line.
@@ -25,6 +25,10 @@ Many more options will shortly be made available
 
 Another thing I must say is that I'm using python regexes, so please read up on that, though
 staight forward text matching works just fine ;)
+
+GooDork 2.2 now allows the use of custom User-Agents with the '-U' switch.
+
+*** check out the 'NEW_FEATURES' file to see what I've added and improved in this version
 
 Dependecies:
 

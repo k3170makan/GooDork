@@ -10,7 +10,7 @@ class URLStripper:
 	def strip(self,page):
 		self.page = page
 		results_wrapper = soup(self.page).find("div",{"id":"ires"})
-		if len(results_wrapper) < 1:
+		if type(results_wrapper) == type(None) or type(results_wrapper.ol) == type(None):
 			return []
 		results_list = results_wrapper.ol
 		list_items = results_list.findAll("li",{"class":"g"})

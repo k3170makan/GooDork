@@ -21,6 +21,12 @@ Another example:
 	intext:%22Web%20Design%20by%20The%20LAD%20Melbourne%22 -uproduct_details\\.\php\(\\?\|%3F\)id\(%3D\|=\) 
 	#SQLi vuln from http://1337day.com/exploits/17864 
 
+User the custom user agent switch:
+	./GooDork site:www.google.com -UMozilla
+												 ^
+												 |
+											(User agent will be set to "Mozilla")
+
 Let me know if you wanna find something, I'm busy extending this project so you guys can autonomously search for the vulns
 reported on 1337day.com
 Also sorting out a logger so you can save your favourite dorks using GooDork as a dork repo ;)
