@@ -69,12 +69,11 @@ class GooDork:
 		step = len(res)
 		while len(res) > 0:
 			res = self.operator.goosearch(step,sys.argv[1])
+			print res
 			if len(res) > 0:
 				links += res
 				links = list(set(links))
 				step += max(len(res),100) #assuming that we get 100 results per query...
-			else:
-				res = []
 			print "step:",step,",results:",len(res)
 		#think i should make Results an iterable as well :)...later!
 		#Uhm I need to get all the details from the web servers if any of the switches a set
@@ -123,7 +122,8 @@ Usage: ./GooDork [dork] {-b[pattern]|-t[pattern]|-a[pattern]}
 dork			-- google search query
 pattern			-- a regular expression to search for
 -b			-- search the displayable text of the dork results for 'pattern'
--t			-- search the title of the dork results for 'pattern'
+-t			-- search the titles of the dork results for 'pattern'
+-u			-- search the urls of the dork results for 'pattern'
 -a			-- search in the anchors of the dork results for 'pattern'
 -L			-- Limit the amount of restults processed to the first L results
 -U			-- Custom User-agent
