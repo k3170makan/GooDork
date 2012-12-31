@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import urllib
 import sys
 import netlib
 import Operator
@@ -82,9 +83,12 @@ class GooDork:
 			if len(sys.argv[2:]) == 0 or hasOtherArgs == False:
 				print "Results:"
 				finish = time.time()
+				resultsfile = open('results.txt','w')
 				for i,link in enumerate(links):
-					 print "%s" % (link)
+					 print "%s" % (urllib.unquote(link))
+					 resultsfile.write(urllib.unquote(link)+'\n')
 				print "Found %d results in %f seconds" % (len(links),finish-start)
+				resultsfile.close()
 				sys.exit()
 		else:
 			print links[1]
