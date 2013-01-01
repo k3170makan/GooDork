@@ -1,10 +1,19 @@
 #!/usr/bin/python
+ie = 0
+import urllib
+import urllib2
+import os
 import sys
 import netlib
 import Operator
 import getopt
 import time
+import tarfile
 import Result #soon to be implemented to make output a lil prettier and extend the use of goodork
+try:
+	from bs4 import BeautifulSoup as soup
+except ImportError:
+	ie = 1
 """
 www.google.{co.za|cn|mm|im|fr|gg|ad|ac|ca|ws|pl|st|co.nz|lu|cd|gl|com.mt|co.zm|mw|co.bw|sc|co.ug|co.tz|az|gr|co.ls|co.in
 				|tl|com.sl|by|gy|co.ke|be|rs|hn|com.au|es|com.ar|sk|tt|kg|az} I think thas about enough
@@ -29,6 +38,38 @@ GooDork 2.1
 
 """
 class GooDork:
+	def getbs4(self):
+		url = 'http://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.1.3.tar.gz'
+		file_name = url.split('/')[-1]
+		u = urllib2.urlopen(url)
+		f = open(file_name, 'wb')
+		meta = u.info()
+		file_size = int(meta.getheaders("Content-Length")[0])
+		print "Downloading: %s Bytes: %s" % (file_name, file_size)
+		
+		file_size_dl = 0
+		block_sz = 8192
+		while True:
+			buffer = u.read(block_sz)
+			if not buffer:
+				break
+	
+			file_size_dl += len(buffer)
+			f.write(buffer)
+			status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
+			status = status + chr(8)*(len(status)+1)
+			print status,
+		
+		f.close()
+		tar = tarfile.open('beautifulsoup4-4.1.3.tar.gz','r')
+		for items in tar:
+			tar.extract(items,'bs4')
+		os.chdir('bs4')
+		os.chdir('beautifulsoup4-4.1.3')
+		os.system('python setup.py install')
+		print '\nbs4 should now be installed. If not, check if the python executable is in your PATH. Re-run GooDork'
+		sys.exit()
+		
 	def __init__(self):
 		self.operator = Operator.Operator() #instance of the operator object
 		self.ResList = [] #a list of result objects
@@ -82,9 +123,12 @@ class GooDork:
 			if len(sys.argv[2:]) == 0 or hasOtherArgs == False:
 				print "Results:"
 				finish = time.time()
+				resultsfile = open('results.txt','w')
 				for i,link in enumerate(links):
-					 print "%s" % (link)
+					 print "%s" % (urllib.unquote(link))
+					 resultsfile.write(urllib.unquote(link)+'\n')
 				print "Found %d results in %f seconds" % (len(links),finish-start)
+				resultsfile.close()
 				sys.exit()
 		else:
 			print links[1]
@@ -151,6 +195,9 @@ if __name__ == "__main__":
 			pass
 		print "==================================="
 		dork = GooDork()
+		if ie:
+			dork.getbs4()
+			sys.exit()
 		dork.run()
 	except KeyboardInterrupt:
 		print "User stopped dork"
