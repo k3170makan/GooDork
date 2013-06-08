@@ -41,7 +41,6 @@ class Operator:
 		if page[0] == False:
 			sys.stderr.write("Problem fetching page...[%s]" % (url))
 			return False
-		return page[1]
 	"""Google Search the given query
 
 		returns the links that google replied with corresponding to the query
@@ -56,7 +55,6 @@ class Operator:
 	def buildResults(self,links): #builds a list of resutls, prevents redundant calls to servers
 		#simply gets the HTML for the page, and appends it to a results list
 		#I could have bs4 implemented in the Result obj, but i feel its not neccessary now
-<<<<<<< HEAD
 		if self.ResList or len(self.ResList) == 0:
 			for link in links:
 				HTML = self.getHTML(link) #I must remeber to add the response headers to the result object
@@ -65,16 +63,6 @@ class Operator:
 				self.ResList[link] = res #add this to the results dictionary
 				#print self.ResList[link].HTML
 				#I decided on a dictionary because its easier for GooDork to work with
-=======
-		
-		for link in links:
-			HTML = self.getHTML(link) #I must remeber to add the response headers to the result object
-			res = Result.Result(link,[],"",[],HTML) #i know its a lil redundant to have the link in the Result object aswell
-			#but I intend ot use this object as an easy way to dump info to a database/XML file later
-			self.ResList[link] = res #add this to the results dictionary
-			#print self.ResList[link].HTML
-			#I decided on a dictionary because its easier for GooDork to work with
->>>>>>> 00a1a2c6537088f19c8fce40de8b09a9d990bbff
 	"""Search the displayable text of a page for a given regex pattern
 			pattern
 		url --- the Resource locator of the page
