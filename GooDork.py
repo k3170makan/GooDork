@@ -88,7 +88,11 @@ class GooDork:
 			sys.exit()
 		try:
 			opts,args = getopt.getopt(sys.argv[2:],"a:b:u:t:L:U:")
+<<<<<<< HEAD
 			print type(opts),type(opts[0]),opts
+=======
+			print opts
+>>>>>>> 00a1a2c6537088f19c8fce40de8b09a9d990bbff
 		except getopt.GetoptError,e:
 			self.usage()
 			sys.exit()
@@ -133,6 +137,7 @@ class GooDork:
 		else:
 			print links[1]
 		#check which results are set
+<<<<<<< HEAD
 		print "Inspecting options...."
 		
 		for opt,arg in opts:
@@ -151,6 +156,22 @@ class GooDork:
 				#print "intitle:",arg
 				results+=self.intitle(arg)
 			if opt == '-u':
+=======
+		self.operator.buildResults(links) #build a list of the results objects to be looked after by the operator
+		print "Inspecting options...."
+		
+		for opt,arg in opts:
+			if opt == '-b':
+				print "intext:",arg
+				results+=self.intext(arg)
+			elif opt == '-a':
+				#print "inanchor:",arg
+				results+=self.inanchor(arg)
+			elif opt == '-t':
+				#print "intitle:",arg
+				results+=self.intitle(arg)
+			elif opt == '-u':
+>>>>>>> 00a1a2c6537088f19c8fce40de8b09a9d990bbff
 				#print "inurl:",arg
 				results+=self.inurl(arg)
 		finish = time.time()
@@ -178,7 +199,11 @@ pattern			-- a regular expression to search for
 e.g ./GooDork site:.edu -bStudents #returns urls to all pages in the .edu domain displaying 'Students'
 """
 	def inurl(self,pattern): #need to rewrite this, so it makes full use of the Result Object
+<<<<<<< HEAD
 		sys.stderr.write("searching for %s in urls\n" % pattern)
+=======
+		sys.stderr.write("searching for %s in links\n" % pattern)
+>>>>>>> 00a1a2c6537088f19c8fce40de8b09a9d990bbff
 		return [link for link in self.links if self.operator.inurl(pattern,link)]
 	def intext(self,pattern):
 		sys.stderr.write("searching for %s in text\n" % pattern)
