@@ -14,6 +14,7 @@ try:
 	from bs4 import BeautifulSoup as soup
 except ImportError:
 	ie = 1
+results = []
 """
 www.google.{co.za|cn|mm|im|fr|gg|ad|ac|ca|ws|pl|st|co.nz|lu|cd|gl|com.mt|co.zm|mw|co.bw|sc|co.ug|co.tz|az|gr|co.ls|co.in
 				|tl|com.sl|by|gy|co.ke|be|rs|hn|com.au|es|com.ar|sk|tt|kg|az} I think thas about enough
@@ -45,7 +46,7 @@ class GooDork:
 		f = open(file_name, 'wb')
 		meta = u.info()
 		file_size = int(meta.getheaders("Content-Length")[0])
-		print "Downloading: %s Bytes: %s" % (file_name, file_size)
+		print "[*] Downloading: %s Bytes: %s" % (file_name, file_size)
 		
 		file_size_dl = 0
 		block_sz = 8192
@@ -74,12 +75,16 @@ class GooDork:
 		self.operator = Operator.Operator() #instance of the operator object
 		self.ResList = [] #a list of result objects
 		self.links = [] #the list of links returned
+		self.results = []
+		self.hasOutPutFile = False
+		self.outputFile = None
+		self.hasRegexOption = False
 		return
 	def search(self): #the new extensions call for a seperate method
 		return
 	def setUserAgent(self,UA):
 		self.operator.setUserAgent(UA)
-		print "User-Agent was set to [%s]" % (self.operator.netlib.UserAgent)
+		print "[*] User-Agent was set to [%s]" % (self.operator.netlib.UserAgent)
 	def run(self):
 		#I've added the creation of Result objects here so gooDork will print more helpful results ;)
 		results = []
@@ -87,7 +92,7 @@ class GooDork:
 			self.usage()
 			sys.exit()
 		try:
-			opts,args = getopt.getopt(sys.argv[2:],"a:b:u:t:L:U:")
+			opts,args = getopt.getopt(sys.argv[2:],"o:a:b:u:t:s:L:U:")
 			print opts
 		except getopt.GetoptError,e:
 			self.usage()
@@ -119,76 +124,110 @@ class GooDork:
 		#think i should make Results an iterable as well :)...later!
 		#Uhm I need to get all the details from the web servers if any of the switches a set
 		self.links = links
-		if links != False:
-			if len(sys.argv[2:]) == 0 or hasOtherArgs == False:
-				print "Results:"
-				finish = time.time()
-				resultsfile = open('results.txt','w')
-				for i,link in enumerate(links):
-					 print "%s" % (urllib.unquote(link))
-					 resultsfile.write(urllib.unquote(link)+'\n')
-				print "Found %d results in %f seconds" % (len(links),finish-start)
-				resultsfile.close()
-				sys.exit()
-		else:
-			print links[1]
+#		if links != False:
+#			if len(sys.argv[2:]) == 0 or hasOtherArgs == False:
+#				print "[*] Results:"
+#				finish = time.time()
+#				resultsfile = open('results.txt','w')
+#				for i,link in enumerate(links):
+#					 print "%s" % (urllib.unquote(link))
+#					 resultsfile.write(urllib.unquote(link)+'\n')
+#				print "[*] Found %d results in %f seconds" % (len(links),finish-start)
+#				resultsfile.close()
+#				sys.exit()
+#		else:
+#			print links[1]
 		#check which results are set
 		
 		for opt,arg in opts:
-			if  opt == '-b' or opt == '-a' or opt == '-t':
+			if  opt == '-b' or opt == '-a' or opt == '-t' or opt == '-s':
 				#pre emptively fetch the HTML for each of the results
 				self.operator.buildResults(links) #build a list of the results objects to be looked after by the operator
 				break
 		for opt,arg in opts:
 			if opt == '-b':
 				#print "intext:",arg
+				self.hasRegexOption = True
 				results+=self.intext(arg)
 			if opt == '-a':
 				#print "inanchor:",arg
+				self.hasRegexOption = True
 				results+=self.inanchor(arg)
 			if opt == '-t':
 				#print "intitle:",arg
+				self.hasRegexOption = True
 				results+=self.intitle(arg)
 			if opt == '-u':
 				#print "inurl:",arg
+				self.hasRegexOption = True
 				results+=self.inurl(arg)
+			if opt == '-s':
+				#print "inurl:",arg
+				self.hasRegexOption = True
+				results+=self.inscript(arg)
+			if opt == '-o':
+				self.hasOutPutFile = True
+				self.outputFile = arg
 		finish = time.time()
 		results = set(results) #I just OR the results for now
-		if len(results) != 0:
-			print "Results of %s" % (sys.argv[1:]) #scrapping this old crapi
+		if len(results) != 0 and self.hasRegexOption:
+			if self.hasOutPutFile:
+				outputfile = open(self.outputFile,"w")
+				outputfile.write("[*] Results of %s\n" % (sys.argv[1:])) #scrapping this old crapi
+				for index,result in enumerate(results):
+					outputfile.write("[%d] %s\n" % (index,result))
+				outputfile.write("[*] Found %d in %f s\n" % (len(results),finish-start))
 			for index,result in enumerate(results):
 				print "%s" % (result)
-			print "Found %d in %f s" % (len(results),finish-start)
+			print "[*] Found %d in %f s" % (len(results),finish-start)
+		elif self.hasRegexOption == False:
+			if self.hasOutPutFile:
+				outputfile = open(self.outputFile,"w")
+				outputfile.write("[*] Results of %s\n" % (sys.argv[1:])) #scrapping this old crapi
+				for index,result in enumerate(self.links):
+					outputfile.write("[%d] %s\n" % (index,result))
+				outputfile.write("[*] Found %d in %f s\n" % (len(results),finish-start))
+			for index,result in enumerate(self.links):
+				print "%s" % (result)
+			print "[*] Found %d in %f s" % (len(results),finish-start)
 		else:
 			print "No Results match your regex"		
 	def usage(self):
-		print """.::GooDork::. 2.0
+		print """version 2.2.1
 
-Usage: ./GooDork [dork] {-b[pattern]|-t[pattern]|-a[pattern]}
+Usage: ./GooDork [dork] {options} 
 
 dork			-- google search query
 pattern			-- a regular expression to search for
--b			-- search the displayable text of the dork results for 'pattern'
--t			-- search the titles of the dork results for 'pattern'
--u			-- search the urls of the dork results for 'pattern'
--a			-- search in the anchors of the dork results for 'pattern'
--L			-- Limit the amount of restults processed to the first L results
--U			-- Custom User-agent
+
+OPTIONS
+-b 'pattern'	-- search the displayable text of the dork results for 'pattern'
+-t 'pattern'	-- search the titles of the dork results for 'pattern'
+-u 'pattern'	-- search the urls of the dork results for 'pattern'
+-a 'pattern'	-- search in the anchors of the dork results for 'pattern'
+-s 'pattern'	-- search in the script tags of the dork results for 'pattern'
+-o 'filename'	-- ouput the results 
+-L  amount		-- Limit the amount of restults processed to the first L results
+-U 'user-agent'-- Custom User-agent
 e.g ./GooDork site:.edu -bStudents #returns urls to all pages in the .edu domain displaying 'Students'
+e.g ./GooDork site:.edu -o universities.txt #returns urls to all pages in the .edu 'universities.txt'
 """
 	def inurl(self,pattern): #need to rewrite this, so it makes full use of the Result Object
-		sys.stderr.write("searching for %s in urls\n" % pattern)
+		sys.stderr.write("[*] searching for %s in urls\n" % pattern)
 		return [link for link in self.links if self.operator.inurl(pattern,link)]
 	def intext(self,pattern):
-		sys.stderr.write("searching for %s in text\n" % pattern)
+		sys.stderr.write("[*] searching for %s in text\n" % pattern)
 		return [link for link in self.links if self.operator.intext(pattern,link)]
 	def intitle(self,pattern):
-		sys.stderr.write("searching for %s in title\n" % pattern)
+		sys.stderr.write("[*] searching for %s in title\n" % pattern)
 		return [link for link in self.links if self.operator.intitle(pattern,link)]
 	def inanchor(self,pattern):
-		sys.stderr.write("searching for %s in anchor\n" % pattern)
+		sys.stderr.write("[*] searching for %s in anchor\n" % pattern)
 		return [link for link in self.links if self.operator.inanchor(pattern,link)] #<-- this is when im lazy!
+	def inscript(self,pattern):
+		return [link for link in self.links if self.operator.inscript(pattern,link)]
 if __name__ == "__main__":
+	dork = GooDork()
 	try:
 		try:
 			f = open("Banner","r")
@@ -196,11 +235,9 @@ if __name__ == "__main__":
 			print f
 		except:
 			pass
-		print "==================================="
-		dork = GooDork()
 		if ie:
 			dork.getbs4()
 			sys.exit()
 		dork.run()
 	except KeyboardInterrupt:
-		print "User stopped dork"
+		print "[*] User stopped dork"

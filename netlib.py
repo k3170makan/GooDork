@@ -65,7 +65,7 @@ class netlib:
 		except socket.error,e:
 			return (False,'')
 		sys.stderr.write("\n\n\n")
-		sys.stderr.write("%s\n%s" % (code,msg))
+		sys.stderr.write("%s\n %s\n" % (code,msg))
 		sys.stderr.write("%s \n" % (headers))
 		html = self.httplib_inst.getfile().read()
 		#for i in html:
@@ -73,5 +73,5 @@ class netlib:
 		#f.flush()
 		return (True,html)
 if __name__ == "__main__":
-	nt = netlib()
-	print nt.googleSearch('site:.nasa.gov')
+	nt = netlib("google-bot")
+	print nt.googleSearch(0,'site:.nasa.gov')

@@ -171,11 +171,22 @@ class Operator:
 			for anchor in anchors:
 				href = anchor.get("href")
 				if self.inurl(pattern,href):
-					print "anchor found! [",href,"]" #this is for finding the least amount of anchors
 					isFound=True
 		except:
 			return isFound
 		return isFound
+	def inscript(self,pattern,
+						url):
+		html = self.ResList[url].HTML	
+		if html == False:
+			return html
+		try:
+			script_tags = soup(html).findAll("script")
+			for tag in script_tags:
+				if re.search(pattern,str(tag.contents)):
+					return True
+		except Exception, e:
+			print e
 	"""This has yet to be implemented
 		I hope to be able to have users supply a dork and return have Operator return all the URLs 'related' to the urls from the dork query
 		e.g
@@ -229,9 +240,6 @@ class Operator:
 	Returns False if not
 	*PROTIP: this will help you find sites that have been XSSed
 	"""
-	def inscript(self,url,
-					 pattern):
-		return
 	def inscript_tag(self,url,
 						  pattern):
 		return
@@ -253,6 +261,21 @@ class Operator:
 				print "Found :",string
 				return True
 		return False
+	def _inscript(self,
+				  pattern):
+
+		f = open('Sample2.html',"r")
+		html = f.read() 
+		if html == False:
+			return html
+		try:
+			script_tags = soup(html).findAll("script")
+			for tag in script_tags:
+				if re.search(pattern,str(tag.contents)):
+					print "Found :",tag		
+					return True
+		except Exception, e:
+			print e
 if __name__ == "__main__":
 	op = Operator()
-	op.inanchor_(sys.argv[1],sys.argv[2])
+	op._inscript(sys.argv[1])
